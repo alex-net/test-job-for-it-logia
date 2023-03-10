@@ -2,6 +2,8 @@
 
 namespace app\models;
 
+use Yii;
+
 class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
 {
     public $id;
@@ -9,6 +11,21 @@ class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
     public $password;
     public $authKey;
     public $accessToken;
+
+    /**
+     * номерпоследнего пройдённого уровка
+     */
+    private $lastLessId;
+
+    public function init()
+    {
+        if ($this->id) {
+            $this->lastLessId = Yii::$app->db->createCommand('select lid from {{%users_less}} where uid = :id', [':id' => $this->id])->queryScalar() ?: null;
+        }
+        Yii::info($this->lastLessId, 'lastLessId');
+
+    }
+
 
     private static $users = [
         '100' => [
@@ -100,5 +117,10 @@ class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
     public function validatePassword($password)
     {
         return $this->password === $password;
+    }
+
+    public function getLastLesson()
+    {
+        return $this->lastLessId;
     }
 }

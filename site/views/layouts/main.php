@@ -39,7 +39,8 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav'],
         'items' => [
-            ['label' => 'Home', 'url' => ['/site/index']],
+            ['label' => 'Главная', 'url' => ['/site/index']],
+            ['label' => 'Уроки(админка)', 'url' => ['lesson-admin/index'], 'visible' => !Yii::$app->user->isGuest,],
             ['label' => 'About', 'url' => ['/site/about']],
             Yii::$app->user->isGuest
                 ? ['label' => 'Login', 'url' => ['/site/login']]
